@@ -231,5 +231,39 @@ async def generate_certificate(message: types.Message, data: CertificateData):
     os.remove(pdf_path)
     del user_data[tg_id]
 
+
+@dp.message(F.text.startswith("/symptom"))
+async def handle_symptom_with_advice(message: Message):
+    user_input = message.text.replace("/symptom", "").strip()
+
+    specialization = model_predict(user_input)  # todo: добавить модель
+
+    if not specialization:
+        await message.answer("😕 Не удалось определить специализацию по введённым симптомам.")
+        return
+
+    try:
+        conn = create_connection()
+        if not conn:
+            return None
+            
+        with conn.cursor() as cursor:
+            tips = cursor.execute(
+                "SELECT title, content FROM MedicalTips WHERE category = $1",
+                specialization
+            )
+        conn.close()
+    except Exception as e:
+        await message.answer(f"⚠️ Ошибка при подключении к базе данных: {e}")
+        return
+
+    if not tips:
+        await message.answer(f"Советы по специализации «{specialization}» пока отсутствуют.")
+        return
+
+    tip = random.choice(tips)
+    response = f"💡 *{tip['title']}*\n\n{tip['content']}"
+    await message.answer(response, parse_mode="Markdown")
+
 if __name__ == "__main__":
     dp.run_polling(bot)
