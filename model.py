@@ -1,8 +1,22 @@
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
-# import pandas as pd
-# import numpy as np
-# from sklearn.preprocessing import LabelEncoder
+import joblib
+import ollama
+
+def get_date(text):
+    prompt = f"Извлеки из текста дату и преобразуй в формат 'DD.MM.YY':  \"{text}\". В ответе должна быть только дата " \
+             f"определенного формата"
+
+    response = ollama.chat(model='mistral', messages=[
+        {'role': 'user', 'content': prompt}
+    ])
+
+    return response['message']['content']
+
+intent_model = joblib.load("intent_model.joblib")
+
+def predict_intent(message):
+    return intent_model.predict([message])[0]
 
 
 checkpoint_path = "./results/checkpoint-624"
