@@ -1,0 +1,25 @@
+.idea
+__pycache__/
+
+# Python кэш
+__pycache__/
+*.py[cod]
+
+# IDE (PyCharm, VS Code и т. д.)
+.idea/
+.vscode/
+
+# Временные файлы
+*.tmp
+*.log
+
+# Конфиги (если не нужно хранить)
+config/
+
+# Результаты работы (если не нужно хранить)
+results/
+work_time/
+
+# Другие специфичные файлы
+*.swp
+*.swo
