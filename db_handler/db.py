@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2 import OperationalError
 from typing import Optional, List, Tuple
 from enum import Enum
+import os
 
 
 class Weekday(Enum):
@@ -28,11 +29,11 @@ CLINIC_WORK_HOURS = {
 def create_connection():
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            port=5432,
-            dbname="medical_assistant",
-            user="postgres",
-            password="1"
+            host=os.environ.get("DB_HOST"),
+            port=os.environ.get("DB_PORT"),
+            dbname=os.environ.get("DB_NAME"),
+            user=os.environ.get("DB_USER"),
+            password=os.environ.get("DB_PASSWORD"),
         )
         return conn
     except OperationalError as e:

@@ -1,11 +1,13 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
-from config import TOKEN
 from aiogram.fsm.storage.memory import MemoryStorage
 from handlers.common import router
 from time_func import send_appointment_reminders
+import os
 
+
+TOKEN = os.environ.get("TOKEN")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 

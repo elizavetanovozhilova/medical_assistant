@@ -1,11 +1,11 @@
 # time_func.py
-
+import os
 import asyncio
 from datetime import datetime, timedelta
 from aiogram import Bot
 import db_handler
-from config import TOKEN
 
+TOKEN = os.getenv("TOKEN")
 bot = Bot(token=TOKEN)
 
 
